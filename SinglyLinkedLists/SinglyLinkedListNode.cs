@@ -19,16 +19,18 @@ namespace SinglyLinkedLists
             set {
                 if (this == value)
                 {
-                    throw new ArgumentException("Can't set Next to this");
+                    throw new ArgumentException();
                 }
+                
                 this.next = value;
             }
         }
 
-        private string value;
-        public string Value 
+        private string stringvalue;
+        public string Value
         {
-            get { return value; }
+            get { return this.stringvalue; }//or return value?
+            set { this.Value = stringvalue; }
         }
 
         public static bool operator <(SinglyLinkedListNode node1, SinglyLinkedListNode node2)
@@ -43,9 +45,14 @@ namespace SinglyLinkedLists
             return node1.CompareTo(node2) > 0;
         }
 
+        public SinglyLinkedListNode()
+        {
+
+        }
+
         public SinglyLinkedListNode(string value)
         {
-            this.value = value;
+            this.stringvalue = value;
 
             // Used by the visualizer:
             allNodes.Add(this);
@@ -70,7 +77,7 @@ namespace SinglyLinkedLists
 
         public override string ToString()
         {
-            return Value;
+            return Value;//?? or return Value?
         }
     }
 }
