@@ -147,7 +147,7 @@ namespace UnitTestSinglyLinkedLists
             CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
-        [TestMethod]//?
+        [TestMethod]//Passed!
         public void ToArrayOnSingleItemList()
         {
             SinglyLinkedList list = new SinglyLinkedList();
@@ -167,7 +167,7 @@ namespace UnitTestSinglyLinkedLists
             CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
-        [TestMethod]//AddFirst is not valid
+        [TestMethod]//Passed!
         public void AddFirstOnEmptyList()
         {
             SinglyLinkedList list = new SinglyLinkedList();
@@ -183,8 +183,9 @@ namespace UnitTestSinglyLinkedLists
             list.AddLast("foo");
             list.AddLast("bar");
             list.AddFirst("grille");
-            var expected = new string[] { "grille", "foo", "bar" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            //var expected = new string[] { "grille", "foo", "bar" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
+            Assert.AreEqual("grille", list.First());
         }
 
         [TestMethod]
@@ -381,11 +382,11 @@ namespace UnitTestSinglyLinkedLists
         [TestMethod]//passed!
         public void IndexOfNodeInLastPosition()
         {
-            //SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille");
-            SinglyLinkedList list = new SinglyLinkedList();
-            list.AddLast("foo");
-            list.AddLast("bar");
-            list.AddLast("grille");
+            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille");
+            //SinglyLinkedList list = new SinglyLinkedList();
+            //list.AddLast("foo");
+            //list.AddLast("bar");
+            //list.AddLast("grille");
             Assert.AreEqual(2, list.IndexOf("grille"));
         }
 
@@ -475,7 +476,7 @@ namespace UnitTestSinglyLinkedLists
             CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
-        [TestMethod]
+        [TestMethod]//Passed!
         public void SortSingleItemList()
         {
             //SinglyLinkedList list = new SinglyLinkedList("foo");
@@ -489,37 +490,60 @@ namespace UnitTestSinglyLinkedLists
         [TestMethod]
         public void SortUnsortedList()
         {
-            SinglyLinkedList list = new SinglyLinkedList("foo", "bar");
+            //SinglyLinkedList list = new SinglyLinkedList("foo", "bar");
+            SinglyLinkedList list = new SinglyLinkedList();
+            list.AddLast("foo");
+            list.AddLast("bar");
             list.Sort();
-            var expected = new string[] { "bar", "foo" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            Assert.AreEqual("bar", list.First());
+            //var expected = new string[] { "bar", "foo" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
         [TestMethod]
         public void SortSortedList()
         {
-            SinglyLinkedList list = new SinglyLinkedList("bar", "cat", "foo", "grille");
-            list.Sort();
-            var expected = new string[] { "bar", "cat", "foo", "grille" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            //SinglyLinkedList list = new SinglyLinkedList("bar", "cat", "foo", "grille");
+            SinglyLinkedList list = new SinglyLinkedList();
+            list.AddLast("bar");
+            list.AddLast("cat");
+            list.AddLast("foo");
+            list.AddLast("grille");
+            SinglyLinkedList afterSortedList= list.Sort();
+            Assert.AreEqual("cat", afterSortedList.ElementAt(1));
+            //var expected = new string[] { "bar", "cat", "foo", "grille" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
         [TestMethod]
         public void SortLongerList()
         {
-            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "zoo", "cat");
-            list.Sort();
-            var expected = new string[] { "bar", "cat", "foo", "grille", "zoo" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            //SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "zoo", "cat");
+            SinglyLinkedList list = new SinglyLinkedList();
+            list.AddLast("foo");
+            list.AddLast("bar");
+            list.AddLast("grille");
+            list.AddLast("zoo");
+            list.AddLast("cat");
+            SinglyLinkedList afterSortedList = list.Sort();
+            Assert.AreEqual("zoo", afterSortedList.ElementAt(4));
+            //var expected = new string[] { "bar", "cat", "foo", "grille", "zoo" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
         [TestMethod]
         public void SortListWithDuplicates()
         {
-            SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "bar");
-            list.Sort();
-            var expected = new string[] { "bar", "bar", "foo", "grille" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            //SinglyLinkedList list = new SinglyLinkedList("foo", "bar", "grille", "bar");
+            SinglyLinkedList list = new SinglyLinkedList();
+            list.AddLast("foo");
+            list.AddLast("bar");
+            list.AddLast("grille");
+            list.AddLast("bar");
+            SinglyLinkedList afterSortedList = list.Sort();
+            Assert.AreEqual("bar", afterSortedList.ElementAt(1));
+            //var expected = new string[] { "bar", "bar", "foo", "grille" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
     }
 }

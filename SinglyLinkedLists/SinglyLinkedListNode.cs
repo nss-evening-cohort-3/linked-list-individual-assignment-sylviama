@@ -16,14 +16,14 @@ namespace SinglyLinkedLists
         public SinglyLinkedListNode Next
         {
             get { return this.next; }
-            set {
-                if (this == value)
-                {
-                    throw new ArgumentException();
-                }
+            set { this.Next = value; }
+            //    if (this == value)
+            //    {
+            //        throw new ArgumentException();
+            //    }
                 
-                this.next = value;
-            }
+            //    this.next = value;
+            //}
         }
 
         private string stringvalue;
@@ -77,7 +77,7 @@ namespace SinglyLinkedLists
 
         public override string ToString()
         {
-            return Value;//?? or return Value?
+            return Value;//?? or return this.Value?
         }
     }
 }

@@ -17,24 +17,19 @@ namespace SinglyLinkedLists
             // NOTE: This constructor isn't necessary, once you've implemented the constructor below.
         }
 
-        public SinglyLinkedList(string value)//Not valid
-        {
-            //firstNode = new SinglyLinkedListNode();
-            firstNode.Value = value;
-        }
-
-        public SinglyLinkedList(string value1, string value2, string value3)
-        {
-            firstNode = new SinglyLinkedListNode();
-            firstNode.Value = value1;
-            firstNode.Next.Value = value2;
-            firstNode.Next.Next.Value = value3;
-        }
+       
 
         // READ: http://msdn.microsoft.com/en-us/library/aa691335(v=vs.71).aspx
-        public SinglyLinkedList(params object[] values)
+        public SinglyLinkedList(params object[] values)//Not Valid
         {
-            //this.firstNode=values;//sylvia's
+            SinglyLinkedListNode currentNode = firstNode;
+            for(int i=0; i<values.Length; i++)
+            {
+                //this.AddLast(values[i].ToString());
+                
+                currentNode.Value = values[i].ToString();
+                currentNode = currentNode.Next;
+            }
         }
 
         // READ: http://msdn.microsoft.com/en-us/library/6x16t2tx.aspx
@@ -66,32 +61,52 @@ namespace SinglyLinkedLists
             }//sylvia's
         }
 
-        public void AddAfter(string existingValue, string value)
+        public void AddAfter(string existingValue, string value)//Not Valid
         {
-            throw new NotImplementedException();
 
-            //LastNode().Next = LastNode();
+            SinglyLinkedListNode currentNode = firstNode;
+            int index = this.IndexOf(existingValue);
+            if (index == -1)
+            {
+                this.AddLast(value);
+            }
+            else
+            {
+                currentNode = this.ElementAtNode(index);
+                Console.WriteLine("currentNode is {0}", currentNode.Value);
 
+                SinglyLinkedListNode toAdd = new SinglyLinkedListNode(value);
+                currentNode.Next = toAdd;
+
+                //toAdd.Next = currentNode.Next.Next;
+                Console.WriteLine("toAdd is {0}", toAdd.Value);
+                Console.WriteLine("toAdd's next is: {0}", toAdd.Next.Value);
+
+            }
         }
 
-        //public SinglyLinkedListNode LastNode()
-        //{
-        //    //Sylvia's
-        //    SinglyLinkedListNode currentNode = firstNode;
-        //    while(currentNode !=null)
-        //    {
-        //        currentNode = currentNode.Next;
-        //    }
-        //    return currentNode;
-        //}
 
-        public void AddFirst(string value)//Not Valid
+        public void AddFirst(string value)//emply is valid, the rest is Not Valid
         {
             //throw new NotImplementedException();
-            SinglyLinkedListNode toAdd = new SinglyLinkedListNode();
-            toAdd.Value = value;
-            toAdd.Next = firstNode;
-            //firstNode = toAdd;
+            if (firstNode == null)
+            {
+                firstNode= new SinglyLinkedListNode(value);
+            }
+            else
+            {
+                SinglyLinkedListNode toAdd = new SinglyLinkedListNode(value);
+                SinglyLinkedListNode currentNode = LastNode();
+                
+                toAdd.Next = firstNode;
+                //firstNode = toAdd;
+                for(int i=Count(); currentNode !=firstNode; i--)
+                {
+                    //currentNode.Next= this.ElementAtNode(i);
+                    currentNode.Next=currentNode;
+                }
+                
+            }
         }
 
         public void AddLast(string value)//Valid
@@ -155,6 +170,23 @@ namespace SinglyLinkedLists
                 throw new ArgumentOutOfRangeException();
             }
             return currentNode.Value;
+        }
+
+        public SinglyLinkedListNode ElementAtNode(int index)//Sylvia added this
+        {
+            SinglyLinkedListNode currentNode = firstNode;
+            
+            while (index > 0 && currentNode != null)
+            {
+                index--;
+                currentNode = currentNode.Next;
+            }
+
+            if (currentNode == null)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            return currentNode;
         }
 
         public string First()//Valid!
@@ -267,59 +299,80 @@ namespace SinglyLinkedLists
         {
             //throw new NotImplementedException();
             SinglyLinkedListNode currentNode = firstNode;
+            SinglyLinkedListNode findTheNode = null;
 
             while(currentNode !=null)
             {
                 if(currentNode.Value==value)
                 {
-                    currentNode = currentNode.Next;
+                    
+                    findTheNode = currentNode;
                     break;
                 }else
                 {
                     currentNode = currentNode.Next;
                 }
             }
+            if(findTheNode !=null)
+            {
+                findTheNode.Value = value;
+                 
+            }
+
+
         }
 
-        public void Sort()//not sure, test depends on ToArray
+        public SinglyLinkedList Sort()//not valid
         {
-            //throw new NotImplementedException();
-            SinglyLinkedList tempList = new SinglyLinkedList();
-            string tempMinString=null;
-            for (int j = 0; tempList[j] != null; j++)
+            List<string> list = this.ToList();
+            list.Sort();
+            SinglyLinkedList singlyList = new SinglyLinkedList();
+            for (int i = 0; i < list.Count(); i++)
             {
-                for (int i = j+1; tempList[i] !=null; i++)
+                singlyList.AddLast(list[i]);
+            }
+
+            return singlyList;
+        }
+
+        public List<string> ToList()//for my convenience, used by sort()
+        {
+            List<string> list = new List<string>();
+            if (firstNode == null)
+            {
+                return list;
+            }
+            else
+            {
+                for (int i = 0; i < this.Count(); i++)
                 {
-                    if (tempList[j][0] > tempList[i][0])
-                    {
-                        tempMinString = tempList[i];
-                        tempList[i] = tempList[j];
-                        tempList[j] = tempMinString;
-                    }
-                } 
+                    list.Add(this.ElementAt(i));
+                }
+                return list;
             }
         }
 
         public string[] ToArray()//Not Valid
         {
-            SinglyLinkedListNode currentNode = firstNode;
             string[] arr = new string[] { };
+            List<string> listArray = new List<string>();
 
-            if (currentNode == null)
+            if (firstNode == null)
             {
                 return arr;
-            } else
+            }
+            else
             {
-                for (int i = 0; currentNode.Next!= null; i++)
+                for (int i = 0; i < this.Count(); i++)
                 {
-                    arr[i] = currentNode.Value;
-                    currentNode = currentNode.Next;
+                    listArray.Add(this.ElementAt(i));
                 }
+                arr = listArray.ToArray();
                 return arr;
             }
         }
 
-        public override string ToString()//??sylvia
+        public override string ToString()//not valid
         {
             SinglyLinkedListNode currentNode = firstNode;
             string result = "{ }";
