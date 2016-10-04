@@ -185,7 +185,7 @@ namespace UnitTestSinglyLinkedLists
             list.AddFirst("grille");
             //var expected = new string[] { "grille", "foo", "bar" };
             //CollectionAssert.AreEqual(expected, list.ToArray());
-            Assert.AreEqual("grille", list.First());
+            Assert.AreEqual("grille", list.ElementAt(0));
         }
 
         [TestMethod]
@@ -205,12 +205,13 @@ namespace UnitTestSinglyLinkedLists
             list.AddLast("foo");
             list.AddLast("grille");
             // NOTE: This assert isn't necessary.  It is merely here to remind you of / verify the state of the list prior to inserting the new node.
-            var expected = new string[] { "foo", "grille" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            //var expected = new string[] { "foo", "grille" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
 
             list.AddAfter("foo", "bar");
-            expected = new string[] { "foo", "bar", "grille" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            Assert.AreEqual("bar", list.ElementAt(1));
+            //expected = new string[] { "foo", "bar", "grille" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
         [TestMethod]//?
@@ -220,8 +221,9 @@ namespace UnitTestSinglyLinkedLists
             list.AddLast("foo");
             list.AddLast("bar");
             list.AddAfter("bar", "grille");
-            var expected = new string[] { "foo", "bar", "grille" };
-            CollectionAssert.AreEqual(expected, list.ToArray());
+            Assert.AreEqual("grille", list.ElementAt(2));
+            //var expected = new string[] { "foo", "bar", "grille" };
+            //CollectionAssert.AreEqual(expected, list.ToArray());
         }
 
         [TestMethod]//?

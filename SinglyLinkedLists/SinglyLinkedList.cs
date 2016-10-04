@@ -61,51 +61,43 @@ namespace SinglyLinkedLists
             }//sylvia's
         }
 
-        public void AddAfter(string existingValue, string value)//Not Valid
+        public void AddAfter(string existingValue, string value)//valid in exe
         {
-
             SinglyLinkedListNode currentNode = firstNode;
             int index = this.IndexOf(existingValue);
             if (index == -1)
+            {
+                throw new ArgumentException();
+            }else if(index==this.Count()-1)
             {
                 this.AddLast(value);
             }
             else
             {
-                currentNode = this.ElementAtNode(index);
-                Console.WriteLine("currentNode is {0}", currentNode.Value);
+                currentNode = this.ElementAtNode(index);//find the node
 
-                SinglyLinkedListNode toAdd = new SinglyLinkedListNode(value);
-                currentNode.Next = toAdd;
-
-                //toAdd.Next = currentNode.Next.Next;
-                Console.WriteLine("toAdd is {0}", toAdd.Value);
-                Console.WriteLine("toAdd's next is: {0}", toAdd.Next.Value);
-
+                SinglyLinkedListNode toAdd = new SinglyLinkedListNode(value);//initial toAdd, and set its value
+                toAdd.Next = currentNode.Next;//set toAdd.Next
+                currentNode.Next = toAdd;//set toAdd.Previous
+                
             }
         }
 
 
-        public void AddFirst(string value)//emply is valid, the rest is Not Valid
+        public void AddFirst(string value)//valid in exe, but test has problem
         {
             //throw new NotImplementedException();
             if (firstNode == null)
             {
-                firstNode= new SinglyLinkedListNode(value);
+                firstNode = new SinglyLinkedListNode(value);
             }
             else
             {
                 SinglyLinkedListNode toAdd = new SinglyLinkedListNode(value);
-                SinglyLinkedListNode currentNode = LastNode();
-                
+                //SinglyLinkedListNode currentNode = firstNode;
+
                 toAdd.Next = firstNode;
-                //firstNode = toAdd;
-                for(int i=Count(); currentNode !=firstNode; i--)
-                {
-                    //currentNode.Next= this.ElementAtNode(i);
-                    currentNode.Next=currentNode;
-                }
-                
+                firstNode = toAdd;
             }
         }
 
@@ -295,36 +287,40 @@ namespace SinglyLinkedLists
             return lastNode;
         }
 
-        public void Remove(string value)//Not Valid
+        public void Remove(string value)//valid in exe
         {
             //throw new NotImplementedException();
             SinglyLinkedListNode currentNode = firstNode;
-            SinglyLinkedListNode findTheNode = null;
 
-            while(currentNode !=null)
+            int index = this.IndexOf(value);
+            if (index == -1)//cannot find value
             {
-                if(currentNode.Value==value)
-                {
-                    
-                    findTheNode = currentNode;
-                    break;
-                }else
-                {
-                    currentNode = currentNode.Next;
-                }
+                throw new ArgumentException();
             }
-            if(findTheNode !=null)
+            else if (index == this.Count() - 1)//remove last node
             {
-                findTheNode.Value = value;
-                 
+                SinglyLinkedListNode previousNode = this.ElementAtNode(index - 1);
+                previousNode.Next = null;
+
             }
+            else if (index == 0)//remove first node
+            {
+                firstNode = currentNode.Next;
+            }
+            else//remove the ones in the middle
+            {
+                this.ToList();
+                currentNode = this.ElementAtNode(index);
 
-
+                SinglyLinkedListNode previousNode = this.ElementAtNode(index - 1);
+                previousNode.Next = currentNode.Next;
+            }
         }
 
-        public SinglyLinkedList Sort()//not valid
+        public SinglyLinkedList Sort()//valid in exe
         {
             List<string> list = this.ToList();
+            list.ToList();
             list.Sort();
             SinglyLinkedList singlyList = new SinglyLinkedList();
             for (int i = 0; i < list.Count(); i++)
@@ -335,7 +331,7 @@ namespace SinglyLinkedLists
             return singlyList;
         }
 
-        public List<string> ToList()//for my convenience, used by sort()
+        public List<string> ToList()
         {
             List<string> list = new List<string>();
             if (firstNode == null)
@@ -352,10 +348,12 @@ namespace SinglyLinkedLists
             }
         }
 
-        public string[] ToArray()//Not Valid
+        public string[] ToArray()//seems valid in exe
         {
+
+            this.ToList();
+
             string[] arr = new string[] { };
-            List<string> listArray = new List<string>();
 
             if (firstNode == null)
             {
@@ -363,11 +361,7 @@ namespace SinglyLinkedLists
             }
             else
             {
-                for (int i = 0; i < this.Count(); i++)
-                {
-                    listArray.Add(this.ElementAt(i));
-                }
-                arr = listArray.ToArray();
+                arr = this.ToArray();
                 return arr;
             }
         }
